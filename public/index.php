@@ -3,7 +3,9 @@
 include_once '../src/error_handler.php';
 require_once '../src/modelo/Banco.php';
 require_once '../src/modelo/Cliente.php';
+require_once '../src/modelo/Cuenta.php';
 require_once '../src/modelo/TipoCuenta.php';
+require_once '../src/modelo/TipoOperacion.php';
 
 $banco = new Banco("Midas");
 
@@ -30,8 +32,6 @@ foreach ($datosClientes as $datosCliente) {
         for ($j = 0; $j < 3; $j++) {
             $tipoOperacion = rand(0, 1) ? TipoOperacion::INGRESO : TipoOperacion::DEBITO;
             $cantidad = rand(0, 500);
-            $banco->ingresoCuentaCliente($datosCliente['dni'], $idCuenta, $cantidad, "Ingreso de $cantidad € en la cuenta");
-            $cantidad = rand(0, 500);
             try {
                 if ($tipoOperacion === TipoOperacion::INGRESO) {
                     $banco->ingresoCuentaCliente($datosCliente['dni'], $idCuenta, $cantidad, "Ingreso de $cantidad € en la cuenta");
@@ -50,7 +50,7 @@ $banco->aplicaComisionCC();
 $banco->aplicaInteresCA();
 
 try {
-    $banco->realizaTransferencia('12345678A', '23456789B', ($banco->getCliente('12345678A')->getIdCuentas())[1], ($banco->getCliente('23456789B')->getIdCuentas())[0], 500);
+    $banco->realizaTransferencia('12345678A', '23456789B', ($banco->obtenerCliente('12345678A')->getIdCuentas())[1], ($banco->obtenerCliente('23456789B')->getIdCuentas())[0], 500);
 } catch (SaldoInsuficienteException $ex) {
     echo $ex->getMessage();
 }
@@ -69,7 +69,7 @@ foreach ($clientes as $dniCliente => $cliente) {
     echo "</br>";
 }
 
-$banco->bajaCuentaCliente('12345678A', ($banco->getCliente('12345678A')->getIdCuentas())[0]);
+$banco->bajaCuentaCliente('12345678A', ($banco->obtenerCliente('12345678A')->getIdCuentas())[0]);
 $banco->bajaCliente('34567890C');
 
 // Mostrar las cuentas y saldos de las cuentas de los clientes
@@ -98,7 +98,11 @@ foreach ($productosBancarios as $productosBancario) {
 
 echo "<h1>Produtos bancarios del cliente '12345678A'</h1>";
 
-$cliente = ($banco->obtenerClientes())['12345678A'];
+foreach ($productosBancarios as $productoBancario) {
+    echo "</br>$productoBancario</br>";
+}
+
+/* $cliente = ($banco->obtenerClientes())['12345678A'];
 echo "</br> Datos del cliente con DNI: 12345678A</br>";
 $idCuentas = $cliente->getIdCuentas();
 foreach ($idCuentas as $idCuenta) {
@@ -106,3 +110,4 @@ foreach ($idCuentas as $idCuenta) {
     echo "</br>$cuenta</br>";
 }
 echo "</br>$tarjeta</br>";
+*/
