@@ -1,14 +1,14 @@
 <?php
 
-require_once "Operacion.php";
-require_once "TipoCuenta.php";
-require_once "IProductoBancario.php";
+require_once "../src/modelo/Operacion.php";
+require_once "../src/modelo/TipoCuenta.php";
+require_once "../src/modelo/IProductoBancario.php";
 require_once "../src/excepciones/SaldoInsuficienteException.php";
 
 /**
  * Clase Cuenta 
  */
-class Cuenta implements IProductoBancario{
+abstract class Cuenta implements IProductoBancario {
 
     /**
      * Id de la cuenta
@@ -92,20 +92,12 @@ class Cuenta implements IProductoBancario{
     }
 
     /**
-     * 
+     * Extracción de una cantidad
      * @param type $cantidad Cantidad de dinero a retirar
      * @param type $descripcion Descripcion del debito
      * @throws SaldoInsuficienteException
      */
-    public function debito(float $cantidad, string $descripcion): void {
-        if ($cantidad <= $this->getSaldo()) {
-            $operacion = new Operacion(TipoOperacion::DEBITO, $cantidad, $descripcion);
-            $this->agregaOperacion($operacion);
-            $this->setSaldo($this->getSaldo() - $cantidad);
-        } else {
-            throw new SaldoInsuficienteException($this->getId());
-        }
-    }
+    abstract public function debito(float $cantidad, string $descripcion): void;
 
     public function __toString() {
         $saldoFormatted = number_format($this->getSaldo(), 2); // Formatear el saldo con dos decimales
@@ -115,6 +107,7 @@ class Cuenta implements IProductoBancario{
                 "Tipo Cuenta: " . get_class($this) . "</br>" .
                 // "Cliente ID: {$this->getIdCliente()}</br>" .
                 "Saldo: $saldoFormatted</br>" .
+                "Operaciones: </br>" .
                 "$operacionesStr";
     }
 
@@ -122,7 +115,7 @@ class Cuenta implements IProductoBancario{
      * Agrega operación a la lista de operaciones de la cuenta
      * @param type $operacion Operación a añadir
      */
-    private function agregaOperacion(Operacion $operacion) {
+    protected function agregaOperacion(Operacion $operacion) {
         $this->operaciones[] = $operacion;
     }
 }

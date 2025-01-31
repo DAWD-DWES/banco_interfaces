@@ -7,11 +7,7 @@ require_once '../src/modelo/Cuenta.php';
 require_once '../src/modelo/TipoCuenta.php';
 require_once '../src/modelo/TipoOperacion.php';
 
-$banco = new Banco("Midas");
-
-$banco->setComisionCC(5);
-$banco->setMinSaldoComisionCC(1000);
-$banco->setInteresCA(1.5);
+$banco = new Banco("Midas", [3, 1000], [1.5, 0.5]);
 
 // Datos de clientes de ejemplo
 $datosClientes = [
@@ -27,7 +23,8 @@ foreach ($datosClientes as $datosCliente) {
     // Crear tres cuentas bancarias para cada cliente
     for ($i = 0; $i < 3; $i++) {
         $tipoCuenta = rand(0, 1) ? TipoCuenta::CORRIENTE : TipoCuenta::AHORROS;
-        $idCuenta = $banco->altaCuentaCliente($datosCliente['dni'], rand(0, 500), $tipoCuenta);
+        $idCuenta = ($tipoCuenta === TipoCuenta::CORRIENTE) ? $banco->altaCuentaCorrienteCliente($datosCliente['dni'], rand(0, 500)) : 
+            $banco->altaCuentaAhorrosCliente($datosCliente['dni'], rand(0, 500), rand(0, 1) ? true : false);
         // Realizar tres operaciones de ingreso en las cada cuenta
         for ($j = 0; $j < 3; $j++) {
             $tipoOperacion = rand(0, 1) ? TipoOperacion::INGRESO : TipoOperacion::DEBITO;
@@ -45,9 +42,12 @@ foreach ($datosClientes as $datosCliente) {
     }
 }
 
-$banco->aplicaComisionCC();
-
-$banco->aplicaInteresCA();
+try {
+    $banco->aplicaComisionCC();
+    $banco->aplicaInteresCA();
+} catch (Excepcion $ex) {
+    echo $ex->getMessage() . "</br>";
+}
 
 try {
     $banco->realizaTransferencia('12345678A', '23456789B', ($banco->obtenerCliente('12345678A')->getIdCuentas())[1], ($banco->obtenerCliente('23456789B')->getIdCuentas())[0], 500);
