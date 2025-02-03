@@ -23,6 +23,12 @@ abstract class Cuenta implements IProductoBancario {
     private float $saldo;
     
     /**
+     * Tipo de la cuenta
+     * @var TipoCuenta
+     */
+    private TipoCuenta $tipo;
+    
+    /**
      * Timestamp de Fecha y hora de creación de la cuenta
      * @var DateTime
      */
@@ -40,11 +46,12 @@ abstract class Cuenta implements IProductoBancario {
      */
     private array $operaciones;
 
-    public function __construct(string $dniCliente, float $cantidad = 0) {
+    public function __construct(string $dniCliente, TipoCuenta $tipo, float $cantidad = 0) {
         $this->setId(uniqid());
         $this->setSaldo(0);
         $this->setOperaciones([]);
         $this->setFechaCreacion(new DateTime('now'));
+        $this->tipo = $tipo;
         $this->ingreso($cantidad, "Ingreso inicial de $cantidad € en la cuenta");
         $this->setIdCliente($dniCliente);
     }
@@ -68,7 +75,12 @@ abstract class Cuenta implements IProductoBancario {
     public function getOperaciones(): array {
         return $this->operaciones;
     }
+    
+    public function getTipo(): TipoCuenta {
+        return $this->tipo;
+    }
 
+    
     public function setId($id) {
         $this->id = $id;
     }
@@ -84,9 +96,9 @@ abstract class Cuenta implements IProductoBancario {
     function setFechaCreacion(DateTime $fechaCreacion): void {
         $this->fechaCreacion = $fechaCreacion;
     }
-
-    public function setTipoCuenta($tipoCuenta) {
-        $this->tipoCuenta = $tipoCuenta;
+    
+    public function setTipo(TipoCuenta $tipo): void {
+        $this->tipo = $tipo;
     }
 
     public function setOperaciones(array $operaciones) {

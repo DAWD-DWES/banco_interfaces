@@ -1,6 +1,7 @@
 <?php
 
 require_once "../src/modelo/Cuenta.php";
+require_once "../src/modelo/TipoCuenta.php";
 
 /**
  * Clase CuentaAhorros 
@@ -12,14 +13,14 @@ class CuentaAhorros extends Cuenta {
     public function __construct(string $idCliente, float $saldo = 0, float $bonificacion = 0, bool $libreta = false) {
         $this->libreta = $libreta;
         $saldoBonificado = $saldo * (1 + ($bonificacion / 100));
-        parent::__construct($idCliente, $saldoBonificado);
+        parent::__construct($idCliente, TipoCuenta::AHORROS, $saldoBonificado);
     }
 
     public function ingreso(float $cantidad, string $descripcion, float $bonificacion = 0): void {
         $cantidadBonificada = $cantidad * (1 + ($bonificacion / 100));
         parent::ingreso($cantidadBonificada, $descripcion);
     }
-    
+
     /**
      * 
      * @param type $cantidad Cantidad de dinero a retirar

@@ -1,6 +1,7 @@
 <?php
 
 require_once "../src/modelo/Cuenta.php";
+require_once "../src/modelo/TipoCuenta.php";
 
 /**
  * Clase CuentaCorriente 
@@ -8,7 +9,7 @@ require_once "../src/modelo/Cuenta.php";
 class CuentaCorriente extends Cuenta {
 
     public function __construct(string $idCliente, float $cantidad = 0) {
-        parent::__construct($idCliente, $cantidad);
+        parent::__construct($idCliente, TipoCuenta::CORRIENTE, $cantidad);
     }
     
     /**
