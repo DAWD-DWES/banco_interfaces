@@ -46,13 +46,12 @@ abstract class Cuenta implements IProductoBancario {
      */
     private array $operaciones;
 
-    public function __construct(string $dniCliente, TipoCuenta $tipo, float $cantidad = 0) {
+    public function __construct(string $dniCliente, TipoCuenta $tipo) {
         $this->setId(uniqid());
         $this->setSaldo(0);
         $this->setOperaciones([]);
         $this->setFechaCreacion(new DateTime('now'));
         $this->tipo = $tipo;
-        $this->ingreso($cantidad, "Ingreso inicial de $cantidad € en la cuenta");
         $this->setIdCliente($dniCliente);
     }
 
@@ -122,7 +121,6 @@ abstract class Cuenta implements IProductoBancario {
      * Extracción de una cantidad
      * @param type $cantidad Cantidad de dinero a retirar
      * @param type $descripcion Descripcion del debito
-     * @throws SaldoInsuficienteException
      */
     abstract public function debito(float $cantidad, string $descripcion): void;
 

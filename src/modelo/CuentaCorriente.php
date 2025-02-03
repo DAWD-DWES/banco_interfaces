@@ -8,15 +8,14 @@ require_once "../src/modelo/TipoCuenta.php";
  */
 class CuentaCorriente extends Cuenta {
 
-    public function __construct(string $idCliente, float $cantidad = 0) {
-        parent::__construct($idCliente, TipoCuenta::CORRIENTE, $cantidad);
+    public function __construct(string $idCliente) {
+        parent::__construct($idCliente, TipoCuenta::CORRIENTE);
     }
     
     /**
      * 
      * @param type $cantidad Cantidad de dinero a retirar
      * @param type $descripcion Descripcion del debito
-     * @throws SaldoInsuficienteException
      */
     public function debito(float $cantidad, string $descripcion): void {
             $operacion = new Operacion(TipoOperacion::DEBITO, $cantidad, $descripcion);

@@ -10,10 +10,9 @@ class CuentaAhorros extends Cuenta {
 
     private bool $libreta;
 
-    public function __construct(string $idCliente, float $saldo = 0, float $bonificacion = 0, bool $libreta = false) {
+    public function __construct(string $idCliente, bool $libreta = false) {
         $this->libreta = $libreta;
-        $saldoBonificado = $saldo * (1 + ($bonificacion / 100));
-        parent::__construct($idCliente, TipoCuenta::AHORROS, $saldoBonificado);
+        parent::__construct($idCliente, TipoCuenta::AHORROS);
     }
 
     public function ingreso(float $cantidad, string $descripcion, float $bonificacion = 0): void {
@@ -33,7 +32,7 @@ class CuentaAhorros extends Cuenta {
             $this->agregaOperacion($operacion);
             $this->setSaldo($this->getSaldo() - $cantidad);
         } else {
-            throw new SaldoInsuficienteException($this->getId());
+            throw new SaldoInsuficienteException($this->getId(), $cantidad);
         }
     }
 
