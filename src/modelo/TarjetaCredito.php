@@ -10,6 +10,12 @@ class TarjetaCredito implements IProductoBancario {
      * @var string
      */
     private string $numero;
+    
+    /**
+     * Pin de tarjeta
+     * @var string
+     */
+    private string $pin;
 
     /**
      * limite de la tarjeta

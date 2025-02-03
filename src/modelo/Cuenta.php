@@ -21,12 +21,18 @@ abstract class Cuenta implements IProductoBancario {
      * @var float
      */
     private float $saldo;
+    
+    /**
+     * Timestamp de Fecha y hora de creación de la cuenta
+     * @var DateTime
+     */
+    private DateTime $fechaCreacion;
 
     /**
      * Id del cliente dueño de la cuenta
      * @var string
      */
-    private string $dniCliente;
+    private string $idCliente;
 
     /**
      * Operaciones realizadas en la cuenta
@@ -38,8 +44,9 @@ abstract class Cuenta implements IProductoBancario {
         $this->setId(uniqid());
         $this->setSaldo(0);
         $this->setOperaciones([]);
+        $this->setFechaCreacion(new DateTime('now'));
         $this->ingreso($cantidad, "Ingreso inicial de $cantidad € en la cuenta");
-        $this->setDNICliente($dniCliente);
+        $this->setIdCliente($dniCliente);
     }
 
     public function getId(): string {
@@ -50,8 +57,12 @@ abstract class Cuenta implements IProductoBancario {
         return $this->saldo;
     }
 
-    public function getDNICliente(): string {
-        return $this->dni;
+    public function getIdCliente(): string {
+        return $this->idCliente;
+    }
+    
+    function getFechaCreacion(): DateTime {
+        return $this->fechaCreacion;
     }
 
     public function getOperaciones(): array {
@@ -66,8 +77,12 @@ abstract class Cuenta implements IProductoBancario {
         $this->saldo = $saldo;
     }
 
-    public function setDNICliente($dniCliente) {
-        $this->dniCliente = $dniCliente;
+    public function setIdCliente($idCliente) {
+        $this->idCliente = $idCliente;
+    }
+    
+    function setFechaCreacion(DateTime $fechaCreacion): void {
+        $this->fechaCreacion = $fechaCreacion;
     }
 
     public function setTipoCuenta($tipoCuenta) {
@@ -105,9 +120,9 @@ abstract class Cuenta implements IProductoBancario {
 
         return "Cuenta ID: {$this->getId()}</br>" .
                 "Tipo Cuenta: " . get_class($this) . "</br>" .
-                // "Cliente ID: {$this->getIdCliente()}</br>" .
+                "Cliente ID: {$this->getIdCliente()}</br>" .
                 "Saldo: $saldoFormatted</br>" .
-                "Operaciones: </br>" .
+                "Fecha Creación: {$this->getFechaCreacion()->format('Y-m-d')}</br>" .
                 "$operacionesStr";
     }
 
