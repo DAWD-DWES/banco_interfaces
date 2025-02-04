@@ -21,13 +21,13 @@ abstract class Cuenta implements IProductoBancario {
      * @var float
      */
     private float $saldo;
-    
+
     /**
      * Tipo de la cuenta
      * @var TipoCuenta
      */
     private TipoCuenta $tipo;
-    
+
     /**
      * Timestamp de Fecha y hora de creación de la cuenta
      * @var DateTime
@@ -55,6 +55,10 @@ abstract class Cuenta implements IProductoBancario {
         $this->setIdCliente($dniCliente);
     }
 
+    public function __clone() {
+        $this->setOperaciones(array_map(fn($operacion) => clone ($operacion), $this->getOperaciones()));
+    }
+
     public function getId(): string {
         return $this->id;
     }
@@ -66,20 +70,19 @@ abstract class Cuenta implements IProductoBancario {
     public function getIdCliente(): string {
         return $this->idCliente;
     }
-    
+
     function getFechaCreacion(): DateTime {
         return $this->fechaCreacion;
     }
 
-    public function getOperaciones(): array {
+    private function getOperaciones(): array {
         return $this->operaciones;
     }
-    
+
     public function getTipo(): TipoCuenta {
         return $this->tipo;
     }
 
-    
     public function setId($id) {
         $this->id = $id;
     }
@@ -91,17 +94,21 @@ abstract class Cuenta implements IProductoBancario {
     public function setIdCliente($idCliente) {
         $this->idCliente = $idCliente;
     }
-    
+
     function setFechaCreacion(DateTime $fechaCreacion): void {
         $this->fechaCreacion = $fechaCreacion;
     }
-    
+
     public function setTipo(TipoCuenta $tipo): void {
         $this->tipo = $tipo;
     }
 
-    public function setOperaciones(array $operaciones) {
+    private function setOperaciones(array $operaciones) {
         $this->operaciones = $operaciones;
+    }
+
+    public function obtenerOperaciones(): array {
+        return array_map(fn($operacion) => clone ($operacion), $this->getOperaciones());
     }
 
     /**

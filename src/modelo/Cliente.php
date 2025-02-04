@@ -122,10 +122,17 @@ class Cliente {
         return $this;
     }
 
-    public function existeIdCuenta(string $idCuenta) {
-        $clave = array_search($idCuenta, $this->getIdCuentas());
-        // Si la clave existe en el array, elimina el elemento
-        return ($clave !== false);
+    /**
+     * Comprueba si la cuenta pertenece al cliente
+     * @param string $idCuenta
+     */
+    public function existeIdCuenta(string $idCuenta): bool {
+        if (array_search($idCuenta, $this->getIdCuentas()) !== false) {
+            return true;
+        }
+        else {
+            throw new CuentaNoPerteneceClienteException($this->getDNI(), $idCuenta);
+        }
     }
 
     /**
