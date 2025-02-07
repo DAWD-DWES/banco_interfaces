@@ -136,7 +136,7 @@ abstract class Cuenta implements IProductoBancario {
         $operacionesStr = implode("</br>", array_map(fn($operacion) => "{$operacion->__toString()}", $this->getOperaciones())); // Convertir las operaciones en una cadena separada por saltos de línea
 
         return "Cuenta ID: {$this->getId()}</br>" .
-                "Tipo Cuenta: " . get_class($this) . "</br>" .
+                "Tipo Cuenta: " . ($this->getTipo())->value . "</br>" .
                 "Cliente ID: {$this->getIdCliente()}</br>" .
                 "Saldo: $saldoFormatted</br>" .
                 "Fecha Creación: {$this->getFechaCreacion()->format('Y-m-d')}</br>" .

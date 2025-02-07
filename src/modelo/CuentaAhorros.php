@@ -7,19 +7,37 @@ require_once "../src/modelo/TipoCuenta.php";
  * Clase CuentaAhorros 
  */
 class CuentaAhorros extends Cuenta {
-
+    
+    private float $bonificacion;
     private bool $libreta;
 
-    public function __construct(string $idCliente, bool $libreta = false) {
+    public function __construct(string $idCliente, float $bonificacion = 0, bool $libreta = false) {
         $this->libreta = $libreta;
+        $this->bonificacion = $bonificacion;
         parent::__construct($idCliente, TipoCuenta::AHORROS);
     }
 
-    public function ingreso(float $cantidad, string $descripcion, float $bonificacion = 0): void {
-        $cantidadBonificada = $cantidad * (1 + ($bonificacion / 100));
-        parent::ingreso($cantidadBonificada, $descripcion);
+    public function getLibreta(): bool {
+        return $this->libreta;
     }
 
+    public function setLibreta(bool $libreta): void {
+        $this->libreta = $libreta;
+    }
+    
+    function getBonificacion(): float {
+        return $this->bonificacion;
+    }
+
+    function setBonificacion(float $bonificacion): void {
+        $this->bonificacion = $bonificacion;
+    }
+    
+    public function ingreso(float $cantidad, string $descripcion): void {
+         $cantidadBonificada = $cantidad * (1 + ($this->getBonificacion() / 100));
+        parent::ingreso($cantidadBonificada, $descripcion);
+    }
+    
     /**
      * 
      * @param type $cantidad Cantidad de dinero a retirar
@@ -34,14 +52,6 @@ class CuentaAhorros extends Cuenta {
         } else {
             throw new SaldoInsuficienteException($this->getId(), $cantidad);
         }
-    }
-
-    public function getLibreta(): bool {
-        return $this->libreta;
-    }
-
-    public function setLibreta(bool $libreta): void {
-        $this->libreta = $libreta;
     }
 
     public function aplicaInteres(float $interes): void {
