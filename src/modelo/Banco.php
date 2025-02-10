@@ -300,7 +300,7 @@ class Banco {
      * @param DateTime $fechaNacimiento
      * @return bool
      */
-    public function altaCliente(string $dni, string $nombre, string $apellido1, string $apellido2, string $telefono, string $fechaNacimiento) {
+    public function altaCliente(string $dni, string $nombre, string $apellido1, string $apellido2, string $telefono, string $fechaNacimiento): void {
         $cliente = new Cliente($dni, $nombre, $apellido1, $apellido2, $telefono, $fechaNacimiento);
         $this->agregaCliente($cliente);
     }
@@ -310,7 +310,7 @@ class Banco {
      * 
      * @param string $dni
      */
-    public function bajaCliente(string $dni) {
+    public function bajaCliente(string $dni): void {
         $cliente = $this->getCliente($dni);
         $cuentas = $cliente->getIdCuentas();
         $cliente->setIdCuentas([]);
@@ -374,7 +374,7 @@ class Banco {
      * @param string $dni
      * @param string $idCuenta
      */
-    public function bajaCuentaCliente(string $dni, string $idCuenta) {
+    public function bajaCuentaCliente(string $dni, string $idCuenta): void {
         $cliente = $this->getCliente($dni);
         if ($cliente->existeIdCuenta($idCuenta)) {
             $this->eliminaCuenta($idCuenta);
@@ -409,7 +409,7 @@ class Banco {
      * @param float $cantidad
      * @param string $descripcion
      */
-    public function ingresoCuentaCliente(string $dni, string $idCuenta, float $cantidad, string $descripcion) {
+    public function ingresoCuentaCliente(string $dni, string $idCuenta, float $cantidad, string $descripcion): void {
         $cliente = $this->getCliente($dni);
         if ($cliente->existeIdCuenta($idCuenta)) {
             $cuenta = $this->getCuenta($idCuenta);
@@ -425,7 +425,7 @@ class Banco {
      * @param float $cantidad
      * @param string $descripcion
      */
-    public function debitoCuentaCliente(string $dni, string $idCuenta, float $cantidad, string $descripcion) {
+    public function debitoCuentaCliente(string $dni, string $idCuenta, float $cantidad, string $descripcion): void {
         $cliente = $this->getCliente($dni);
         if ($cliente->existeIdCuenta($idCuenta)) {
             $cuenta = $this->getCuenta($idCuenta);
@@ -454,7 +454,7 @@ class Banco {
     /**
      * Aplica cargos de comisión a la cuenta corriente
      */
-    public function aplicaComisionCC() {
+    public function aplicaComisionCC(): void {
         $cuentasCorrientes = array_filter($this->getCuentas(), fn($cuenta) => $cuenta instanceof CuentaCorriente);
 
 // Captura las propiedades necesarias con 'use'
@@ -469,7 +469,7 @@ class Banco {
     /**
      * Aplica intereses a la cuenta de ahorros
      */
-    public function aplicaInteresCA() {
+    public function aplicaInteresCA(): void {
         $cuentasAhorros = array_filter($this->getCuentas(), fn($cuenta) => $cuenta instanceof CuentaAhorros);
 // Captura las propiedades necesarias con 'use'
         $interesCA = $this->getInteresCA();
@@ -514,24 +514,4 @@ class Banco {
         $cliente = $this->getCliente($dni);
         $productoBancario->debito($cantidad, $descripcion);
     }
-
-    /**
-     * Realiza un cargo a un producto bancario
-     * @param IProductoBancario $productoBancario
-     * @param float $cantidad
-     * @param string $descripcion
-     */
-    /*  public function realizarCargo(IProductoBancario $productoBancario, float $cantidad, string $descripcion) {
-      $productoBancario->debito($cantidad, $descripcion);
-      } */
-
-    /**
-     * Aplica una bonificación a un producto bancario
-     * @param IProductoBancario $productoBancario
-     * @param float $cantidad
-     * @param string $descripcion
-     */
-    /* public function AplicoBonificacion(IProductoBancario $productoBancario, float $cantidad, string $descripcion) {
-      $productoBancario->ingreso($cantidad, $descripcion);
-      } */
 }

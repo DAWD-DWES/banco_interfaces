@@ -25,11 +25,11 @@ class CuentaAhorros extends Cuenta {
         $this->libreta = $libreta;
     }
     
-    function getBonificacion(): float {
+    public function getBonificacion(): float {
         return $this->bonificacion;
     }
 
-    function setBonificacion(float $bonificacion): void {
+    public function setBonificacion(float $bonificacion): void {
         $this->bonificacion = $bonificacion;
     }
     

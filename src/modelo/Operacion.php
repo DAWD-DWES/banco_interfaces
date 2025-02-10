@@ -55,19 +55,19 @@ class Operacion {
         $this->tipo = $tipo;
     }
 
-    public function setCantidad(float $cantidad) {
+    public function setCantidad(float $cantidad): void {
         $this->cantidad = $cantidad;
     }
 
-    private function setFecha(DateTime $fecha) {
+    private function setFecha(DateTime $fecha): void {
         $this->fecha = $fecha;
     }
 
-    public function setDescripcion(string $descripcion) {
+    public function setDescripcion(string $descripcion): void {
         $this->descripcion = $descripcion;
     }
 
-    public function __toString() {
+    public function __toString(): string {
         return ("{$this->getTipo()->name} Cantidad: {$this->getCantidad()} Fecha: {$this->getFecha()->format('Y-m-d H:i:s')} Descripción: {$this->getDescripcion()}");
     }
 }

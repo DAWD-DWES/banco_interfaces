@@ -71,7 +71,7 @@ abstract class Cuenta implements IProductoBancario {
         return $this->idCliente;
     }
 
-    function getFechaCreacion(): DateTime {
+    public function getFechaCreacion(): DateTime {
         return $this->fechaCreacion;
     }
 
