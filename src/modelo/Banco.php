@@ -498,8 +498,7 @@ class Banco {
      * @param float $cantidad
      * @param string $descripcion
      */
-    public function ingresoProductoBancarioCliente(string $dni, IProductoBancario $productoBancario, float $cantidad, string $descripcion) {
-        $cliente = $this->getCliente($dni);
+    public function ingresoProductoBancarioCliente(IProductoBancario $productoBancario, float $cantidad, string $descripcion): void {
         $productoBancario->ingreso($cantidad, $descripcion);
     }
 
@@ -510,8 +509,7 @@ class Banco {
      * @param float $cantidad
      * @param string $descripcion
      */
-    public function debitoProductoBancarioCliente(string $dni, IProductoBancario $productoBancario, float $cantidad, string $descripcion) {
-        $cliente = $this->getCliente($dni);
+    public function debitoProductoBancarioCliente(IProductoBancario $productoBancario, float $cantidad, string $descripcion): void {
         $productoBancario->debito($cantidad, $descripcion);
     }
 }

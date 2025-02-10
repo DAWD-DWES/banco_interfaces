@@ -93,7 +93,7 @@ $tarjeta = $banco->altaTarjetaCreditoCliente('12345678A');
 $productosBancarios[] = $tarjeta;
 
 foreach ($productosBancarios as $productosBancario) {
-    $banco->ingresoProductoBancarioCliente('12345678A', $productosBancario, 100, "Bonificación");
+    $banco->ingresoProductoBancarioCliente($productosBancario, 100, "Bonificación");
 }
 
 echo "<h1>Produtos bancarios del cliente '12345678A'</h1>";
@@ -101,13 +101,3 @@ echo "<h1>Produtos bancarios del cliente '12345678A'</h1>";
 foreach ($productosBancarios as $productoBancario) {
     echo "</br>$productoBancario</br>";
 }
-
-/* $cliente = ($banco->obtenerClientes())['12345678A'];
-echo "</br> Datos del cliente con DNI: 12345678A</br>";
-$idCuentas = $cliente->getIdCuentas();
-foreach ($idCuentas as $idCuenta) {
-    $cuenta = $banco->obtenerCuenta($idCuenta);
-    echo "</br>$cuenta</br>";
-}
-echo "</br>$tarjeta</br>";
-*/
